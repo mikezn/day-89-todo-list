@@ -49,6 +49,31 @@ body {
     color: #333;
 }
 
+
+.task-edit-form {
+    flex: 1;
+}
+
+.task-text-input {
+    font-size: 28px;
+    border: none;
+    background: transparent;
+    width: 100%;
+    color: #333;
+    padding: 0.25rem 0;
+}
+
+.task-text-input:focus {
+    outline: none;
+    background-color: #f9f9f9;
+}
+
+.task-text-input.done {
+    text-decoration: line-through;
+    color: #aaa;
+}
+
+
 .check-icon {
     font-size: 40px;           /* checkbox icon size */
     cursor: pointer;
@@ -115,4 +140,167 @@ body {
 .task-text.done {
   text-decoration: line-through;
   color: #aaa;
+}
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Panel */
+.sidebar {
+    width: 220px;
+    background-color: #f9f9f9;
+    padding-top: 2rem;
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 1rem;
+    border-right: 1px solid #eee;
+    font-size: 16px;
+}
+
+.sidebar h3 {
+    margin-top: 0;
+    font-size: 18px;
+    margin-bottom: 1rem;
+}
+
+.list-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.list-nav li {
+  position: relative;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.list-nav li a {
+    text-decoration: none;
+    color: #444;
+    display: block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.list-nav li.active a {
+    background-color: #e9f5ff;
+    font-weight: bold;
+    color: #007BFF;
+}
+
+.list-nav li a:hover {
+    background-color: #f0f0f0;
+}
+
+.list-name-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+/* Main content styling stays the same */
+.main-content {
+    flex: 1;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-bottom: 2rem;
+}
+
+.new-list-button {
+    margin-top: 1.5rem;
+    width: 100%;
+    background: none;
+    border: none;
+    color: #007BFF;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: background-color 0.2s ease;
+}
+
+.new-list-button:hover {
+    background-color: #eaf4ff;
+}
+
+.list-actions {
+  display: flex;
+  gap: 0.5rem;
+  visibility: hidden; /* Hidden by default */
+}
+
+.list-nav li:hover .list-actions {
+  visibility: visible; /* Show icons on hover */
+}
+
+
+.edit-list-btn,
+.delete-list-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 14px;
+  cursor: pointer;
+  color: #aaa;
+  transition: color 0.2s ease;
+}
+
+.edit-list-btn:hover {
+  color: #007BFF;
+}
+
+.delete-list-btn:hover {
+  color: #dc3545;
+}
+
+
+.list-name-display {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.edit-list-btn {
+    background: none;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 0.5rem;
+    font-size: 14px;
+}
+
+.edit-list-btn:hover {
+    color: #007BFF;
+}
+
+.list-name-edit-form input {
+    width: 100%;
+    font-size: 14px;
+    padding: 0.25rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+
+.delete-list-btn {
+    background: none;
+    border: none;
+    color: #dc3545;
+    cursor: pointer;
+    padding: 0 0.25rem;
+    font-size: 14px;
+}
+
+.delete-list-btn:hover {
+    color: #a00025;
 }

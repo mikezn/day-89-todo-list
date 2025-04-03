@@ -2,45 +2,98 @@
 
 <body>
 
-<div class="task-input-wrapper">
-    <form method="POST">
-        {{ form.csrf_token }}
-        {{ form.task(id="task-input", size=100, placeholder="Type your task and hit Enter", autocomplete="off") }}
-    </form>
-</div>
+<div class="layout">
+  <!-- Sidebar: Task Lists -->
+  <div class="sidebar">
+    <h3>Your Lists</h3>
+      <ul class="list-nav">
+        {% for todo_list in todo_lists %}
+          <li class="{% if todo_list.id == active_list.id %}active{% endif %}" data-list-id="{{ todo_list.id }}">
+            <div class="list-name-row">
+              {% if todo_list.id == active_list.id %}
+                <strong>{{ todo_list.name }}</strong>
+              {% else %}
+                <a href="{{ url_for('view_list', list_id=todo_list.id) }}">{{ todo_list.name }}</a>
+              {% endif %}
 
-{% if todo_lists %}
-    <div class="task-list">
-        {% for task in todo_lists[0].tasks %}
-            <div class="task-item">
-                  <form method="POST" action="{{ url_for('update_task', task_id=task.id) }}">
-                    <button type="submit" name="toggle_complete" class="icon-button">
-                      {% if task.complete %}
-                        <i class="fa-solid fa-square-check check-icon completed"></i>
-                      {% else %}
-                        <i class="fa-regular fa-square check-icon"></i>
-                      {% endif %}
-                    </button>
-                  </form>
+              <div class="list-actions">
+                <button class="edit-list-btn" onclick="enableListEdit({{ todo_list.id }})" title="Edit">
+                  <i class="fa-solid fa-pen"></i>
+                </button>
+                <form method="POST" action="{{ url_for('delete_list', list_id=todo_list.id) }}" onsubmit="return confirmDelete('{{ todo_list.name }}')" style="display: inline;">
+                  <button class="delete-list-btn" type="submit" title="Delete">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
 
-                  <span class="task-text {% if task.complete %}done{% endif %}">
-                    {{ task.task }}
-                  </span>
-
-                  <form method="POST" action="{{ url_for('update_task', task_id=task.id) }}">
-                    <button type="submit" name="toggle_star" class="icon-button">
-                      {% if task.starred %}
-                        <i class="fa-solid fa-star star-icon starred"></i>
-                      {% else %}
-                        <i class="fa-regular fa-star star-icon"></i>
-                      {% endif %}
-                    </button>
-                  </form>
-    </div>
-
+            <!-- Edit form -->
+            <form method="POST" action="{{ url_for('edit_list_name', list_id=todo_list.id) }}" class="list-name-edit-form" style="display: none;">
+              <input type="text" name="new_name" value="{{ todo_list.name }}" onblur="submitListEdit(this)">
+            </form>
+          </li>
         {% endfor %}
+      </ul>
+      <!-- New List Button -->
+    <form method="POST" action="{{ url_for('create_list') }}">
+      <button type="submit" class="new-list-button">
+        <i class="fa-solid fa-circle-plus"></i>
+        <span>Add New List</span>
+      </button>
+    </form>
+  </div>
+
+  <!-- Main Content Area (input + tasks) -->
+  <div class="main-content">
+    <div class="task-input-wrapper">
+      <form method="POST" action="{{ url_for('home') }}">
+        {{ form.csrf_token }}
+        <input type="hidden" name="list_id" value="{{ active_list.id }}">
+        {{ form.task(id="task-input", size=100, placeholder="Type your task and hit Enter", autocomplete="off") }}
+      </form>
     </div>
-{% endif %}
+
+    {% if active_list %}
+      <div class="task-list">
+        {% for task in active_list.tasks %}
+          <div class="task-item">
+            <form method="POST" action="{{ url_for('update_task', task_id=task.id) }}">
+              <button type="submit" name="toggle_complete" class="icon-button">
+                {% if task.complete %}
+                  <i class="fa-solid fa-square-check check-icon completed"></i>
+                {% else %}
+                  <i class="fa-regular fa-square check-icon"></i>
+                {% endif %}
+              </button>
+            </form>
+
+            <form method="POST" action="{{ url_for('update_task', task_id=task.id) }}" class="task-edit-form">
+              <input
+                type="text"
+                name="edited_task"
+                value="{{ task.task }}"
+                class="task-text-input {% if task.complete %}done{% endif %}"
+                data-original="{{ task.task }}"
+                onblur="submitIfChanged(this)"
+              />
+            </form>
+
+            <form method="POST" action="{{ url_for('update_task', task_id=task.id) }}">
+              <button type="submit" name="toggle_star" class="icon-button">
+                {% if task.starred %}
+                  <i class="fa-solid fa-star star-icon starred"></i>
+                {% else %}
+                  <i class="fa-regular fa-star star-icon"></i>
+                {% endif %}
+              </button>
+            </form>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>
 
 <script>
   window.addEventListener("DOMContentLoaded", function () {
@@ -49,6 +102,47 @@
       taskInput.focus();
     }
   });
+
+  function submitIfChanged(input) {
+    const original = input.dataset.original.trim();
+    const current = input.value.trim();
+
+    if (current !== original) {
+      input.form.submit();
+    }
+  }
+
+
+    function enableListEdit(listId) {
+    const li = document.querySelector(`li[data-list-id='${listId}']`);
+    const display = li.querySelector('.list-name-display');
+    const form = li.querySelector('.list-name-edit-form');
+
+    display.style.display = "none";
+    form.style.display = "block";
+
+    const input = form.querySelector("input");
+    input.focus();
+    input.select();
+  }
+
+  function submitListEdit(input) {
+    const original = input.defaultValue.trim();
+    const current = input.value.trim();
+    if (current !== original && current !== "") {
+      input.form.submit();
+    } else {
+      input.form.style.display = "none";
+      const display = input.closest("li").querySelector(".list-name-display");
+      display.style.display = "flex";
+    }
+  }
+
+  function confirmDelete(listName) {
+    return confirm(`Are you sure you want to delete the list "${listName}" and all its tasks?`);
+  }
+
 </script>
+
 </body>
 </html>
