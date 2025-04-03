@@ -1,0 +1,54 @@
+{% include "header.html" %}
+
+<body>
+
+<div class="task-input-wrapper">
+    <form method="POST">
+        {{ form.csrf_token }}
+        {{ form.task(id="task-input", size=100, placeholder="Type your task and hit Enter", autocomplete="off") }}
+    </form>
+</div>
+
+{% if todo_lists %}
+    <div class="task-list">
+        {% for task in todo_lists[0].tasks %}
+            <div class="task-item">
+                  <form method="POST" action="{{ url_for('update_task', task_id=task.id) }}">
+                    <button type="submit" name="toggle_complete" class="icon-button">
+                      {% if task.complete %}
+                        <i class="fa-solid fa-square-check check-icon completed"></i>
+                      {% else %}
+                        <i class="fa-regular fa-square check-icon"></i>
+                      {% endif %}
+                    </button>
+                  </form>
+
+                  <span class="task-text {% if task.complete %}done{% endif %}">
+                    {{ task.task }}
+                  </span>
+
+                  <form method="POST" action="{{ url_for('update_task', task_id=task.id) }}">
+                    <button type="submit" name="toggle_star" class="icon-button">
+                      {% if task.starred %}
+                        <i class="fa-solid fa-star star-icon starred"></i>
+                      {% else %}
+                        <i class="fa-regular fa-star star-icon"></i>
+                      {% endif %}
+                    </button>
+                  </form>
+    </div>
+
+        {% endfor %}
+    </div>
+{% endif %}
+
+<script>
+  window.addEventListener("DOMContentLoaded", function () {
+    const taskInput = document.getElementById("task-input");
+    if (taskInput) {
+      taskInput.focus();
+    }
+  });
+</script>
+</body>
+</html>

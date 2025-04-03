@@ -1,0 +1,118 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #ffffff;
+}
+
+.task-input-wrapper {
+    padding: 0;
+    margin: 0;
+    background-color: #fff;
+    border: none;
+    box-shadow: none;
+}
+
+.task-input-wrapper form {
+    margin: 0;
+}
+
+.task-input-wrapper input[type="text"] {
+    width: 100%;
+    padding: 0.75rem 1rem 0.75rem 2rem;  /* ⬅️ left padding to match checkbox + gap */
+    font-size: 36px;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: #222;
+    line-height: 1.2;
+    border-bottom: 3px solid #ccc;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.task-input-wrapper input[type="text"]:focus {
+    border-bottom: 3px solid #007BFF;
+    background-color: transparent;
+}
+
+.task-list {
+    padding: 1rem 2rem;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+    font-size: 28px;
+    color: #333;
+}
+
+.check-icon {
+    font-size: 40px;           /* checkbox icon size */
+    cursor: pointer;
+    color: #aaa;
+    flex-shrink: 0;            /* prevent resizing if task text gets long */
+    line-height: 1;            /* no weird vertical spacing */
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.check-icon:hover {
+    color: #2ecc71;            /* hover colour */
+    transform: scale(1.1);     /* subtle zoom on hover */
+}
+
+.task-text {
+    flex: 1;
+    line-height: 1.2;
+}
+
+.task-item input[type="checkbox"] {
+    transform: scale(1.5);
+    cursor: pointer;
+}
+
+.task-text.done {
+    text-decoration: line-through;
+    color: #aaa;
+}
+
+.icon-button {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+.check-icon {
+  font-size: 36px;
+  color: #aaa;
+  transition: color 0.2s ease;
+}
+
+.check-icon.completed {
+  color: #2ecc71;
+}
+
+.star-icon {
+  font-size: 32px;
+  margin-left: 1rem;
+  color: #aaa;
+  transition: color 0.2s ease;
+}
+
+.star-icon.starred {
+  color: #f9c74f;
+}
+
+.star-icon:hover {
+    color: #f9c74f;            /* hover colour */
+    transform: scale(1.1);     /* subtle zoom on hover */
+}
+
+.task-text.done {
+  text-decoration: line-through;
+  color: #aaa;
+}
