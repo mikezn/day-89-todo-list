@@ -110,9 +110,9 @@ def home():
 
 @app.route("/task/<int:task_id>/update", methods=["POST"])
 def update_task(task_id):
-    print("update task hit")
+
     task = db.get_or_404(TodoTask, task_id)
-    print(task_id)
+
     if "toggle_complete" in request.form:
         task.complete = not task.complete
 

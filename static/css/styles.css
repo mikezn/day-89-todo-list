@@ -19,7 +19,7 @@ body {
 
 .task-input-wrapper input[type="text"] {
     width: 100%;
-    padding: 0.75rem 1rem 0.75rem 2rem;  /* ⬅️ left padding to match checkbox + gap */
+    padding: 0.75rem 1rem 0.75rem 2rem;  /* left padding to match checkbox + gap */
     font-size: 36px;
     border: none;
     outline: none;
