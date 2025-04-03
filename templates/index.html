@@ -9,7 +9,7 @@
       <ul class="list-nav">
         {% for todo_list in todo_lists %}
           <li class="{% if todo_list.id == active_list.id %}active{% endif %}" data-list-id="{{ todo_list.id }}">
-            <div class="list-name-row">
+            <div class="list-name-display">
               {% if todo_list.id == active_list.id %}
                 <strong>{{ todo_list.name }}</strong>
               {% else %}
